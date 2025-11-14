@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+    color: #fff;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #1f2937;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#top-bar {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: #111827;
+    border-bottom: 2px solid #374151;
+    flex-shrink: 0;
+}
+
+#top-bar input {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background: #374151;
+    width: 220px;
+}
+
+#top-bar button {
+    padding: 8px 14px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#status {
+    padding: 4px 12px;
+    min-height: 1.2em;
+    font-size: 0.9rem;
+    color: #9ca3af;
+    background-color: #020617;
+    border-bottom: 1px solid #111827;
+    flex-shrink: 0;
+}
+
+#status.error {
+    color: #fecaca;
+}
+
+#app {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+}
+
+#sidebar {
+    width: 220px;
+    background: #111827;
+    border-right: 2px solid #374151;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+#sidebar h2 {
+    margin: 0 0 12px 0;
+}
+
+#tab-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+#tab-list li {
+    background: #1f2937;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+#tab-list li.active {
+    background: #2563eb;
+}
+
+#tab-list li:hover {
+    background: #374151;
+}
+
+.tab-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 0.9rem;
+}
+
+#tab-list li.active .tab-close {
+    color: #e5e7eb;
+}
+
+.tab-close:hover {
+    color: #f87171;
+}
+
+#native-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #d1d5db;
+    font-size: 0.9rem;
+}
+
+#content {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    background: #000;
+    overflow: hidden;
+}
+
+#view-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+webview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+}
+
