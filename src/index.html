@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <title>MultiSession Browser</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="top-bar">
+    <input id="input-url" type="text" placeholder="https://ejemplo.com"/>
+    <input id="input-count" type="number" min="1" value="1"/>
+
+    <label id="native-label">
+        <input type="checkbox" id="input-native-windows">
+        Abrir en ventanas nativas
+    </label>
+
+    <button id="btn-create">Crear sesiones</button>
+</div>
+
+<div id="status"></div>
+
+<div id="app">
+    <div id="sidebar">
+        <h2>Sesiones</h2>
+        <ul id="tab-list"></ul>
+    </div>
+
+    <div id="content">
+        <div id="view-container"></div>
+    </div>
+</div>
+
+<script src="renderer.js"></script>
+</body>
+
+
+</html>
