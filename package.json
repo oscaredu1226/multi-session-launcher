@@ -1,0 +1,23 @@
+{
+  "name": "multisession",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oscaredu1226/multi-session-launcher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oscaredu1226/multi-session-launcher/issues"
+  },
+  "homepage": "https://github.com/oscaredu1226/multi-session-launcher#readme",
+  "devDependencies": {
+    "electron": "^39.2.0"
+  }
+}
