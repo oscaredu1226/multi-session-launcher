@@ -1,7 +1,3 @@
-/* ===========================================
-   LOGIN FRONT LOGIC (USANDO BACKEND REAL)
-   =========================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
     const loginOverlay = document.getElementById("login-overlay");
     const loginUser = document.getElementById("login-user");
@@ -9,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginBtn = document.getElementById("login-btn");
     const loginError = document.getElementById("login-error");
 
-    // URL de tu backend (en dev, localhost)
     const LICENSE_API_URL = "http://localhost:3000/auth/validate";
 
     if (!loginOverlay || !loginUser || !loginKey || !loginBtn || !loginError) {
@@ -17,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Función común para validar contra el backend
     async function validateAndUnlock(username, key) {
         try {
             loginError.textContent = "";
@@ -42,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return false;
             }
 
-            // OK → guardar y desbloquear app
             localStorage.setItem("ms_user", username);
             localStorage.setItem("ms_key", key);
 
@@ -63,25 +56,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Auto-login si ya había datos guardados
     (async () => {
         const savedUser = localStorage.getItem("ms_user");
         const savedKey = localStorage.getItem("ms_key");
 
-        if (!savedKey) return; // no hay nada guardado
+        if (!savedKey) return;
 
         const ok = await validateAndUnlock(savedUser || "Unknown", savedKey);
         if (ok) {
-            // si funcionó, ya se ocultó el overlay
             console.log("Auto-login OK para:", savedUser);
         } else {
-            // si falla (clave revocada, etc.), limpiamos
             localStorage.removeItem("ms_user");
             localStorage.removeItem("ms_key");
         }
     })();
 
-    // Click manual en el botón de login
     loginBtn.addEventListener("click", async () => {
         const username = loginUser.value.trim() || "Unknown";
         const key = loginKey.value.trim();
@@ -95,15 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-/* ===========================================
-   AQUI SIGUE TU CÓDIGO ORIGINAL (NO LO TOCAS)
-   =========================================== */
-
-// ... aquí va todo lo que ya tienes:
-// const urlInput = document.getElementById("input-url");
-// const countInput = ...
-// etc.
-
 const urlInput = document.getElementById("input-url");
 const countInput = document.getElementById("input-count");
 const createBtn = document.getElementById("btn-create");
@@ -115,8 +95,7 @@ const statusDiv = document.getElementById("status");
 
 let tabs = [];
 let currentTab = null;
-let sessionCounter = 0; // IDs únicos
-
+let sessionCounter = 0;
 function setStatus(message, isError = false) {
     if (!statusDiv) return;
     statusDiv.textContent = message || "";
