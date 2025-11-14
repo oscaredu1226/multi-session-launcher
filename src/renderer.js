@@ -1,3 +1,109 @@
+/* ===========================================
+   LOGIN FRONT LOGIC (USANDO BACKEND REAL)
+   =========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginOverlay = document.getElementById("login-overlay");
+    const loginUser = document.getElementById("login-user");
+    const loginKey = document.getElementById("login-key");
+    const loginBtn = document.getElementById("login-btn");
+    const loginError = document.getElementById("login-error");
+
+    // URL de tu backend (en dev, localhost)
+    const LICENSE_API_URL = "http://localhost:3000/auth/validate";
+
+    if (!loginOverlay || !loginUser || !loginKey || !loginBtn || !loginError) {
+        console.error("Login elements not found in DOM");
+        return;
+    }
+
+    // Función común para validar contra el backend
+    async function validateAndUnlock(username, key) {
+        try {
+            loginError.textContent = "";
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Verificando...";
+
+            const res = await fetch(LICENSE_API_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    user: username,
+                    key: key
+                })
+            });
+
+            const data = await res.json();
+
+            if (!data.ok) {
+                loginError.textContent = data.message || "Invalid key.";
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Entrar";
+                return false;
+            }
+
+            // OK → guardar y desbloquear app
+            localStorage.setItem("ms_user", username);
+            localStorage.setItem("ms_key", key);
+
+            loginOverlay.style.display = "none";
+            loginError.textContent = "";
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Entrar";
+
+            console.log("✅ Access granted:", data);
+
+            return true;
+        } catch (err) {
+            console.error("Error validating license:", err);
+            loginError.textContent = "Connection error. Try again later.";
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Entrar";
+            return false;
+        }
+    }
+
+    // Auto-login si ya había datos guardados
+    (async () => {
+        const savedUser = localStorage.getItem("ms_user");
+        const savedKey = localStorage.getItem("ms_key");
+
+        if (!savedKey) return; // no hay nada guardado
+
+        const ok = await validateAndUnlock(savedUser || "Unknown", savedKey);
+        if (ok) {
+            // si funcionó, ya se ocultó el overlay
+            console.log("Auto-login OK para:", savedUser);
+        } else {
+            // si falla (clave revocada, etc.), limpiamos
+            localStorage.removeItem("ms_user");
+            localStorage.removeItem("ms_key");
+        }
+    })();
+
+    // Click manual en el botón de login
+    loginBtn.addEventListener("click", async () => {
+        const username = loginUser.value.trim() || "Unknown";
+        const key = loginKey.value.trim();
+
+        if (!username || !key) {
+            loginError.textContent = "Completa ambos campos.";
+            return;
+        }
+
+        await validateAndUnlock(username, key);
+    });
+});
+
+/* ===========================================
+   AQUI SIGUE TU CÓDIGO ORIGINAL (NO LO TOCAS)
+   =========================================== */
+
+// ... aquí va todo lo que ya tienes:
+// const urlInput = document.getElementById("input-url");
+// const countInput = ...
+// etc.
+
 const urlInput = document.getElementById("input-url");
 const countInput = document.getElementById("input-count");
 const createBtn = document.getElementById("btn-create");
@@ -10,7 +116,6 @@ const statusDiv = document.getElementById("status");
 let tabs = [];
 let currentTab = null;
 let sessionCounter = 0; // IDs únicos
-
 
 function setStatus(message, isError = false) {
     if (!statusDiv) return;
@@ -64,9 +169,7 @@ window.addEventListener("resize", () => {
     });
 });
 
-
 function createSession(url) {
-
     const id = generateSessionId();
     const partitionName = `persist:session-${id}`;
 
@@ -196,7 +299,6 @@ function closeTab(id) {
         }
     }
 }
-
 
 createBtn.onclick = async () => {
     setStatus("", false);
