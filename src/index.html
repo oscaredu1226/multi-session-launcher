@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+
+<div id="login-overlay">
+    <div id="login-box">
+        <h2>Access Required</h2>
+        <input id="login-user" placeholder="User" type="text">
+        <input id="login-key" placeholder="Access key" type="password">
+        <button id="login-btn">Enter</button>
+        <p id="login-error"></p>
+    </div>
+</div>
+
+
 <div id="top-bar">
     <input id="input-url" type="text" placeholder="https://ejemplo.com"/>
     <input id="input-count" type="number" min="1" value="1"/>
@@ -33,6 +45,4 @@
 
 <script src="renderer.js"></script>
 </body>
-
-
 </html>
