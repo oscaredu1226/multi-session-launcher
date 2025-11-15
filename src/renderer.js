@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginBtn = document.getElementById("login-btn");
     const loginError = document.getElementById("login-error");
 
-    const LICENSE_API_URL = "http://localhost:3000/auth/validate";
+    const LICENSE_API_URL = "https://multisession-license-server.onrender.com/auth/validate";
 
     if (!loginOverlay || !loginUser || !loginKey || !loginBtn || !loginError) {
         console.error("Login elements not found in DOM");
