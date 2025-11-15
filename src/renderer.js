@@ -1,3 +1,48 @@
+let tabs = [];
+let currentTab = null;
+let sessionCounter = 0;
+let licenseCheckInterval = null;
+
+function handleLicenseRevoked(message) {
+    alert(message || "Tu licencia ya no es válida. La aplicación se reiniciará.");
+
+    try {
+        localStorage.removeItem("ms_user");
+        localStorage.removeItem("ms_key");
+    } catch (e) {
+        console.error("Error limpiando localStorage tras revocación de licencia:", e);
+    }
+
+    window.location.reload();
+}
+
+function startLicenseHeartbeat(username, key, licenseApiUrl) {
+    if (licenseCheckInterval) {
+        clearInterval(licenseCheckInterval);
+        licenseCheckInterval = null;
+    }
+
+    licenseCheckInterval = setInterval(async () => {
+        try {
+            const res = await fetch(licenseApiUrl, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({user: username, key})
+            });
+
+            const data = await res.json();
+
+            if (!data.ok) {
+                clearInterval(licenseCheckInterval);
+                licenseCheckInterval = null;
+                handleLicenseRevoked(data.message);
+            }
+        } catch (err) {
+            console.warn("Error al revalidar la licencia:", err);
+        }
+    }, 60_000);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginOverlay = document.getElementById("login-overlay");
     const loginUser = document.getElementById("login-user");
@@ -46,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("✅ Access granted:", data);
 
+            startLicenseHeartbeat(username, key, LICENSE_API_URL);
             return true;
         } catch (err) {
             console.error("Error validating license:", err);
@@ -93,9 +139,6 @@ const tabList = document.getElementById("tab-list");
 const viewContainer = document.getElementById("view-container");
 const statusDiv = document.getElementById("status");
 
-let tabs = [];
-let currentTab = null;
-let sessionCounter = 0;
 function setStatus(message, isError = false) {
     if (!statusDiv) return;
     statusDiv.textContent = message || "";
